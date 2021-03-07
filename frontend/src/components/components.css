@@ -1,0 +1,12 @@
+.align-items {
+    display: flex !important;
+    flex: 1 !important;
+}
+
+.font-color {
+    color: #21FCCC !important;
+}
+
+.backgroud-color {
+    background-color: #031A4E !important;
+}
