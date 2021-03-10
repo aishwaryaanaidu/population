@@ -1,0 +1,3 @@
+Flask-RESTful
+bs4
+pandas
