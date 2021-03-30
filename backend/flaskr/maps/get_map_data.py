@@ -2,22 +2,27 @@ from flask import request
 import requests
 from flask_restful import Resource
 from bs4 import BeautifulSoup
+import pandas as pd
 
 class GetMapData(Resource):
     def get(self):
         try:
-            page = requests.get("https://www.worldometers.info/world-population/population-by-country/")
-            soup = BeautifulSoup(page.text, 'html.parser')
-            # returns a list of tables present on the page. Choose the one you need
-            table = soup.find_all('table')[0]
-            for child in table.children:
-                for td in child:
-                    print(td)
-        except (ValueError, KeyError, TypeError) as exception:
+            url = "https://www.worldometers.info/world-population/population-by-country/"
+            html = requests.get(url)
+            soup = BeautifulSoup(html.text, "html.parser")
+            # print(soup.prettify())
+            table = soup.find("table", attrs={"id": "example2"})
+            head = table.thead.find_all("tr")
+            print(head)
+            headings = []
+            for th in head[0].find_all("th"):
+                headings.append(th.text.replace("\n", "").strip())
+            print(headings)
+        except(ValueError, KeyError, TypeError) as exception:
             return {
-                'message': 'Unexpected'
+                'message': 'Unexpected error {}'.format(exception)
             }, 400
         except Exception as exception:
             return {
-                'message': 'Internal server error'
+                'message': 'Internal server error {}'.format(exception)
             }, 500
