@@ -13,11 +13,27 @@ class GetMapData(Resource):
             # print(soup.prettify())
             table = soup.find("table", attrs={"id": "example2"})
             head = table.thead.find_all("tr")
-            print(head)
+            # print(head)
             headings = []
             for th in head[0].find_all("th"):
                 headings.append(th.text.replace("\n", "").strip())
-            print(headings)
+            # print(headings)
+            headings[0] = 'id'
+            body = table.tbody.find_all("tr")
+            # print(body)
+            data = []
+            for r in range(1, len(body)):
+                row = []
+                for td in body[r].find_all("td"):
+                    row.append(td.text.replace("\n", "").strip())
+                data.append(row)
+            map_data = []
+            for array in data:
+                temp_dictionary = {}
+                for i in range(0, len(headings)):
+                    temp_dictionary[headings[i]] = array[i]
+                map_data.append(temp_dictionary)
+            return map_data
         except(ValueError, KeyError, TypeError) as exception:
             return {
                 'message': 'Unexpected error {}'.format(exception)
