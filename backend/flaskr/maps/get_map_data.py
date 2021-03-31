@@ -6,7 +6,11 @@ class GetMapData(Resource):
     def get(self):
         try:
             data = ScrapeData.get_scraped_data()
-            return data
+            parsed_list = []
+            parsed_list.append(["Country", "Population"])
+            for item in data:
+                parsed_list.append([item['country'], item['population']])
+            return parsed_list
         except(ValueError, KeyError, TypeError) as exception:
             return {
                 'message': 'Unexpected error {}'.format(exception)
