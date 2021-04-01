@@ -5,11 +5,11 @@ from flask_restful import Resource
 class GetMapData(Resource):
     def get(self):
         try:
-            data = ScrapeData.get_scraped_data()
+            data = ScrapeData.get_population_data()
             parsed_list = []
             parsed_list.append(["Country", "Population"])
             for item in data:
-                parsed_list.append([item['country'], item['population']])
+                parsed_list.append([item['country'], int(item['population'].replace(",", ""))])
             return parsed_list
         except(ValueError, KeyError, TypeError) as exception:
             return {
