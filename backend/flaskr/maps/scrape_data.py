@@ -5,7 +5,7 @@ import re
 
 class ScrapeData(Resource):
     @staticmethod
-    def get_scraped_data():
+    def get_population_data():
         try:
             url = "https://www.worldometers.info/world-population/population-by-country/"
             html = requests.get(url)
@@ -28,7 +28,7 @@ class ScrapeData(Resource):
             body = table.tbody.find_all("tr")
             # print(body)
             data = []
-            for r in range(1, len(body)):
+            for r in range(0, len(body)):
                 row = []
                 for td in body[r].find_all("td"):
                     row.append(td.text.replace("\n", "").strip())
